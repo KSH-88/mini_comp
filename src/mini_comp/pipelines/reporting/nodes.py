@@ -9,7 +9,8 @@ from pyspark.sql import SparkSession
 
 # This function uses plotly.express
 def compare_passenger_capacity_exp(preprocessed_shuttles: SparkDataFrame):
-    spark = SparkSession.builder.appName("PassengerCapacityComparison").getOrCreate()
+    spark = SparkSession.builder.appName(
+        "PassengerCapacityComparison").getOrCreate()
 
     # Register the DataFrame as a temporary table
     preprocessed_shuttles.createOrReplaceTempView("shuttles")
@@ -27,7 +28,8 @@ def compare_passenger_capacity_exp(preprocessed_shuttles: SparkDataFrame):
 
 
 def compare_passenger_capacity_go(preprocessed_shuttles: SparkDataFrame):
-    spark = SparkSession.builder.appName("PassengerCapacityComparison").getOrCreate()
+    spark = SparkSession.builder.appName(
+        "PassengerCapacityComparison").getOrCreate()
 
     # Register the DataFrame as a temporary table
     preprocessed_shuttles.createOrReplaceTempView("shuttles")
