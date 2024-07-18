@@ -126,3 +126,32 @@ def split_cities(initial_data_train_labels: pd.DataFrame, initial_data_train_fea
     iq_train_labels = initial_data_train_labels.loc['iq']
 
     return sj_train_features, sj_train_labels, iq_train_features, iq_train_labels
+
+
+def impute_features(sj_train_features: pd.DataFrame, iq_train_features: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    # Fill missing values with the mean of the column
+    sj_train_features = sj_train_features.fillna(method='ffill')
+    iq_train_features = iq_train_features.fillna(method='ffill')
+
+    return sj_train_features, iq_train_features
+
+
+def select_features(sj_train_features: pd.DataFrame, iq_train_features: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    # select features we want
+    features = ['reanalysis_specific_humidity_g_per_kg',
+                'reanalysis_dew_point_temp_k',
+                'station_avg_temp_c',
+                'station_min_temp_c']
+
+    sj_train_features = sj_train_features[features]
+    iq_train_features = iq_train_features[features]
+
+    return sj_train_features, iq_train_features
+
+
+def join_features_labels(sj_train_features: pd.DataFrame, sj_train_labels: pd.DataFrame, iq_train_features: pd.DataFrame, iq_train_labels: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    # Join the features and labels
+    sj_train = sj_train_features.join(sj_train_labels)
+    iq_train = iq_train_features.join(iq_train_labels)
+
+    return sj_train, iq_train
