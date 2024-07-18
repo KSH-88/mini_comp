@@ -92,3 +92,19 @@ def create_model_input_table(
     model_input_table = rated_shuttles.join(companies, "company_id", how="left")
     model_input_table = model_input_table.dropna()
     return model_input_table
+
+
+
+def load_data(initial_data_train_labels: pd.DataFrame, initial_data_train_features:pd.DataFrame) -> pd.DataFrame:
+    """
+    Load the initial data train labels and features.
+
+    Args:
+        initial_data_train_labels (pd.DataFrame): The initial data train labels.
+        initial_data_train_features (pd.DataFrame): The initial data train features.
+
+    Returns:
+        pd.DataFrame: The loaded data train labels and features.
+    """
+
+    return initial_data_train_labels, initial_data_train_features
