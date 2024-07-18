@@ -37,7 +37,7 @@ namespaces = false
 package_name = "mini_comp"
 project_name = "mini_comp"
 kedro_init_version = "0.19.6"
-tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'PySpark', 'Kedro Viz']
+tools = ['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'Kedro Viz']
 example_pipeline = "True"
 source_dir = "src"
 
