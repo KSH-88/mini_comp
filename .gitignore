@@ -20,6 +20,10 @@ data/**
 # keep also the example dataset
 !data/01_raw/*
 
+# Ignore personal notebook
+
+notebooks/personal/**
+
 
 ##########################
 # Common files
