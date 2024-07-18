@@ -139,10 +139,8 @@ def write_output_file(sj_test, iq_test, sj_best_model, iq_best_model):
 
     submission_sj = pd.read_csv("../02_intermediate/sj_train.csv",
                             index_col=[0, 1, 2])
-    
     submission_iq = pd.read_csv("../02_intermediate/iq_train.csv",
                             index_col=[0, 1, 2])
-    
     submission = [submission_sj, submission_iq]
     submission = pd.concat(submission)
 
