@@ -47,7 +47,7 @@ companies:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -59,7 +59,7 @@ reviews:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -79,7 +79,7 @@ shuttles@spark:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -91,7 +91,7 @@ preprocessed_companies:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -103,7 +103,7 @@ preprocessed_shuttles:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -115,7 +115,7 @@ preprocessed_reviews:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -127,7 +127,7 @@ model_input_table@spark:
     header: True
     inferSchema: True
   save_args:
-    sep: ','
+    sep: ","
     header: True
     mode: overwrite
 
@@ -173,20 +173,26 @@ dummy_confusion_matrix:
   filepath: data/08_reporting/dummy_confusion_matrix.png
   versioned: true
 
-
-
 initial_data_train_labels:
   filepath: mini_comp\data\01_raw\dengue_labels_train.csv
   type: pandas.CSVDataset
   file_format: csv
   load_args:
-     index_col: [0,1,2]
-
-
+    index_col: [0, 1, 2]
 
 initial_data_train_features:
   filepath: mini_comp\data\01_raw\dengue_features_train.csv
   type: pandas.CSVDataset
   file_format: csv
   load_args:
-    index_col: [0,1,2]
+    index_col: [0, 1, 2]
+
+sj_train:
+  filepath: mini_comp\data\02_intermediate\sj_train.csv
+  type: pandas.CSVDataset
+  file_format: csv
+
+iq_train:
+  filepath: mini_comp\data\02_intermediate\iq_train.csv
+  type: pandas.CSVDataset
+  file_format: csv
