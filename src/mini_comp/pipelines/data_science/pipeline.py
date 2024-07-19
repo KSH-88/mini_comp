@@ -29,7 +29,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=write_output_file,
-                inputs=["sj_test_data", "iq_test_data",
+                inputs=["sj_unseen_test", "iq_unseen_test",
                         "sj_fitted_model", "iq_fitted_model"],
                 outputs="submission",
                 name="write_output_file_node",

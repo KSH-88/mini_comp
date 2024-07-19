@@ -97,12 +97,12 @@ def wrapper_plot_fitted_values(sj_train_data, sj_fitted_model, iq_train_data, iq
     return sj_figs, iq_figs
 
 
-def write_output_file(sj_test, iq_test, sj_fitted_model, iq_fitted_model):
-    sj_predictions = sj_fitted_model.predict(sj_test).astype(int)
-    iq_predictions = iq_fitted_model.predict(iq_test).astype(int)
-    sj_test['city'] = 'sj'
-    iq_test['city'] = 'iq'
-    submission = [sj_test, iq_test]
+def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted_model):
+    sj_predictions = sj_fitted_model.predict(sj_unseen_test).astype(int)
+    iq_predictions = iq_fitted_model.predict(iq_unseen_test).astype(int)
+    sj_unseen_test['city'] = 'sj'
+    iq_unseen_test['city'] = 'iq'
+    submission = [sj_unseen_test, iq_unseen_test]
     submission = pd.concat(submission)
 
     submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
