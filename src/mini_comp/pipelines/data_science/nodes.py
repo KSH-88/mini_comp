@@ -7,6 +7,7 @@ from statsmodels.tools import eval_measures
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 import numpy as np
+import statsmodels.api as sm
 
 
 def split_data(data: pd.DataFrame) -> Tuple:
@@ -27,6 +28,52 @@ def split_data(data: pd.DataFrame) -> Tuple:
     return train, test
 
 
+# def get_best_model(train, test):
+#     # Step 1: specify the form of the model
+#     model_formula = "total_cases ~ 1 + " \
+#                     "reanalysis_specific_humidity_g_per_kg + " \
+#                     "reanalysis_dew_point_temp_k + " \
+#                     "station_min_temp_c + " \
+#                     "station_avg_temp_c"
+
+#     grid = 10 ** np.arange(-8, -3, dtype=np.float64)
+
+#     best_alpha = []
+#     best_score = 1000
+
+#     # Step 2: Find the best hyper parameter, alpha
+#     for alpha in grid:
+#         # model = smf.negativebinomial(
+#         #     formula=model_formula, data=train, alpha=alpha)
+#         model = smf.glm(formula=model_formula,
+#                         data=train,
+#                         family=sm.families.NegativeBinomial(alpha=alpha))
+
+#         results = model.fit()
+#         predictions = results.predict(test).astype(int)
+#         score = eval_measures.meanabs(predictions, test.total_cases)
+
+#         if score < best_score:
+#             best_alpha = alpha
+#             best_score = score
+
+#     print('best alpha = ', best_alpha)
+#     print('best score = ', best_score)
+
+#     # Step 3: refit on entire dataset
+#     full_dataset = pd.concat([train, test])
+#     model = smf.glm(formula=model_formula,
+#                     data=full_dataset,
+#                     family=sm.families.NegativeBinomial(alpha=best_alpha))
+#     # model = smf.negativebinomial(
+#     #     formula=model_formula, data=full_dataset, alpha=best_alpha)
+
+#     fitted_model = model.fit()
+#     return fitted_model
+
+from statsmodels.tools import eval_measures
+import statsmodels.formula.api as smf
+
 def get_best_model(train, test):
     # Step 1: specify the form of the model
     model_formula = "total_cases ~ 1 + " \
@@ -34,22 +81,20 @@ def get_best_model(train, test):
                     "reanalysis_dew_point_temp_k + " \
                     "station_min_temp_c + " \
                     "station_avg_temp_c"
-
+    
     grid = 10 ** np.arange(-8, -3, dtype=np.float64)
-
+                    
     best_alpha = []
     best_score = 1000
-
+        
     # Step 2: Find the best hyper parameter, alpha
     for alpha in grid:
-        # model = smf.negativebinomial(
-        #     formula=model_formula, data=train, alpha=alpha)
         model = smf.glm(formula=model_formula,
                         data=train,
-                        family=smf.negativebinomial(alpha=alpha))
+                        family=sm.families.NegativeBinomial(alpha=alpha))
 
         results = model.fit()
-        predictions = results.predict(test)
+        predictions = results.predict(test).astype(int)
         score = eval_measures.meanabs(predictions, test.total_cases)
 
         if score < best_score:
@@ -58,19 +103,15 @@ def get_best_model(train, test):
 
     print('best alpha = ', best_alpha)
     print('best score = ', best_score)
-
+            
     # Step 3: refit on entire dataset
     full_dataset = pd.concat([train, test])
     model = smf.glm(formula=model_formula,
                     data=full_dataset,
-                    family=smf.negativebinomial(alpha=best_alpha))
-    # model = smf.negativebinomial(
-    #     formula=model_formula, data=full_dataset, alpha=best_alpha)
+                    family=sm.families.NegativeBinomial(alpha=best_alpha))
 
     fitted_model = model.fit()
     return fitted_model
-
-
 def plot_fitted_values(train, fitted_model):
     figs, axes = plt.subplots(nrows=1, ncols=1)
 
@@ -102,10 +143,49 @@ def wrapper_plot_fitted_values(sj_train_data, sj_fitted_model, iq_train_data, iq
     return sj_figs, iq_figs
 
 
-def write_output_file(sj_test_data, iq_test_data, sj_fitted_model, iq_fitted_model):
-    sj_predictions = sj_fitted_model.predict(sj_test_data)
-    iq_predictions = iq_fitted_model.predict(iq_test_data)
-    submission = [sj_test_data, iq_test_data]
+# def write_output_file(sj_test_data, iq_test_data, sj_fitted_model, iq_fitted_model):
+#     sj_predictions = sj_fitted_model.predict(sj_test_data).astype(int)
+#     iq_predictions = iq_fitted_model.predict(iq_test_data).astype(int)
+#     submission = [sj_test_data, iq_test_data]
+#     submission = pd.concat(submission)
+#     submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
+#     return submission
+
+# def write_output_file(sj_test, iq_test, sj_fitted_model, iq_fitted_model):
+#     sj_predictions = sj_fitted_model.predict(sj_test).astype(int)
+#     iq_predictions = iq_fitted_model.predict(iq_test).astype(int)
+
+
+#     # submission_sj = pd.read_csv("../../data/02_intermediate/sj_train.csv",
+#     #                         index_col=[0, 1, 2])
+#     # submission_iq = pd.read_csv("../../data/02_intermediate/iq_train.csv",
+#     #                         index_col=[0, 1, 2])
+#     # submission = [submission_sj, submission_iq]
+#     sj_test['city'] = 'sj'
+#     iq_test['city'] = 'iq'
+#     submission = [sj_test, iq_test]
+#     submission = pd.concat(submission)
+
+#     submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
+#     submission['total_cases'] = submission.total_cases
+#     #submission = submission[['city', 'total_cases']]
+#     submission = submission[['city','year','weekofyear','total_cases']]
+#     submission = submission.reset_index()
+#     return submission
+
+
+def write_output_file(sj_test, iq_test, sj_fitted_model, iq_fitted_model):
+    sj_predictions = sj_fitted_model.predict(sj_test).astype(int)
+    iq_predictions = iq_fitted_model.predict(iq_test).astype(int)
+    sj_test['city'] = 'sj'
+    iq_test['city'] = 'iq'
+    submission = [sj_test, iq_test]
     submission = pd.concat(submission)
+
     submission.total_cases = np.concatenate([sj_predictions, iq_predictions])
+    submission['total_cases'] = submission.total_cases
+    submission = submission[['city', 'total_cases']]
+    submission = submission.reset_index()
+    submission = submission[['city','year','weekofyear','total_cases']]
+  #  submission.to_csv('../../data/07_model_output/submission_notebook.csv', index = False)
     return submission

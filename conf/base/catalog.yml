@@ -192,3 +192,9 @@ sj_train:
 iq_train:
   filepath: data/02_intermediate/iq_train.csv
   type: pandas.CSVDataset
+
+submission:
+  filepath: data/07_model_output/submission.csv
+  type: pandas.CSVDataset
+  save_args: 
+    index: false

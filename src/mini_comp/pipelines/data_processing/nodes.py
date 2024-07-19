@@ -162,8 +162,8 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
     iq_train_features_imputed = iq_train_features.fillna(method='ffill')
 
     # Round all float or double numbers to 2 decimal places
-    sj_train_features_imputed = sj_train_features.round(2)
-    iq_train_features_imputed = iq_train_features.round(2)
+    sj_train_features_imputed = sj_train_features_imputed.round(2)
+    iq_train_features_imputed = iq_train_features_imputed.round(2)
 
     # select features we want
     features = ['reanalysis_specific_humidity_g_per_kg',
