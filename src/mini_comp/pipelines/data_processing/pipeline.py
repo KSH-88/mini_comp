@@ -1,11 +1,8 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
 from .nodes import (
-    create_model_input_table,
-    load_shuttles_to_csv,
-    preprocess_companies,
-    preprocess_reviews,
-    preprocess_shuttles,
+    preprocess_cities,
+    split_cities,
 )
 
 
@@ -13,34 +10,22 @@ def create_pipeline(**kwargs) -> Pipeline:
     return pipeline(
         [
             node(
-                func=load_shuttles_to_csv,
-                inputs="shuttles_excel",
-                outputs="shuttles@csv",
-                name="load_shuttles_to_csv_node",
+                func=split_cities,
+                inputs=["initial_data_train_labels",
+                        "initial_data_train_features", "initial_data_test_features"],
+                outputs=["sj_train_features", "sj_train_labels",
+                         "iq_train_features", "iq_train_labels", "sj_test_features", "iq_test_features"],
+                name="split_cities_node",
             ),
             node(
-                func=preprocess_companies,
-                inputs="companies",
-                outputs=["preprocessed_companies", "companies_columns"],
-                name="preprocess_companies_node",
-            ),
-            node(
-                func=preprocess_shuttles,
-                inputs="shuttles@spark",
-                outputs="preprocessed_shuttles",
-                name="preprocess_shuttles_node",
-            ),
-            node(
-                func=preprocess_reviews,
-                inputs="reviews",
-                outputs="preprocessed_reviews",
-                name="preprocess_reviews_node",
-            ),
-            node(
-                func=create_model_input_table,
-                inputs=["preprocessed_shuttles", "preprocessed_companies", "preprocessed_reviews"],
-                outputs="model_input_table@spark",
-                name="create_model_input_table_node",
-            ),
+                func=preprocess_cities,
+                inputs=["sj_train_features", "iq_train_features",
+                        "sj_train_labels", "iq_train_labels", "sj_test_features", "iq_test_features"],
+                outputs=["sj_train", "iq_train",
+                         "sj_unseen_test", "iq_unseen_test"],
+
+                name="preprocess_features_node",
+            )
+
         ]
     )
