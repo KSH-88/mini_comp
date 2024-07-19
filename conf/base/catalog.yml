@@ -185,6 +185,12 @@ initial_data_train_features:
   load_args:
     index_col: [0, 1, 2]
 
+initial_data_test_features:
+  filepath: data/01_raw/dengue_features_test.csv
+  type: pandas.CSVDataset
+  load_args:
+    index_col: [0, 1, 2]
+
 sj_train:
   filepath: data/02_intermediate/sj_train.csv
   type: pandas.CSVDataset
@@ -193,6 +199,18 @@ sj_train:
 
 iq_train:
   filepath: data/02_intermediate/iq_train.csv
+  type: pandas.CSVDataset
+  save_args:
+    index: true
+
+sj_unseen_test:
+  filepath: data/02_intermediate/sj_unseen_test.csv
+  type: pandas.CSVDataset
+  save_args:
+    index: true
+
+iq_unseen_test:
+  filepath: data/02_intermediate/iq_unseen_test.csv
   type: pandas.CSVDataset
   save_args:
     index: true
