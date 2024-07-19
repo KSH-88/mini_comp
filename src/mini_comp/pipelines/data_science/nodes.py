@@ -19,7 +19,8 @@ def split_data(data: pd.DataFrame) -> Tuple:
     Returns:
         Split data.
     """
-
+    print('data.head()', data.head())
+    print('data.tail()', data.tail())
     train, test = train_test_split(
         data, test_size=0.2, shuffle=False, stratify=None
     )
@@ -102,6 +103,7 @@ def write_output_file(sj_test, iq_test, sj_fitted_model, iq_fitted_model):
     iq_predictions = iq_fitted_model.predict(iq_test).astype(int)
     sj_test['city'] = 'sj'
     iq_test['city'] = 'iq'
+    print('sj_test', sj_test)
     submission = [sj_test, iq_test]
     submission = pd.concat(submission)
 
