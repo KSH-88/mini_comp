@@ -192,14 +192,3 @@ sj_train:
 iq_train:
   filepath: data/02_intermediate/iq_train.csv
   type: pandas.CSVDataset
-
-sj_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/sj_data.csv
-
-iq_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/iq_data.csv
-
-
-
