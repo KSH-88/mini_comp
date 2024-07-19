@@ -188,18 +188,17 @@ initial_data_train_features:
 sj_train:
   filepath: data/02_intermediate/sj_train.csv
   type: pandas.CSVDataset
+  save_args:
+    index: true
 
 iq_train:
   filepath: data/02_intermediate/iq_train.csv
   type: pandas.CSVDataset
+  save_args:
+    index: true
 
-sj_data:
+submission:
+  filepath: data/07_model_output/submission.csv
   type: pandas.CSVDataset
-  filepath: data/02_intermediate/sj_data.csv
-
-iq_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/iq_data.csv
-
-
-
+  save_args:
+    index: false
