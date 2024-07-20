@@ -36,7 +36,9 @@ def get_best_model(train, test):
                     "station_avg_temp_c + " \
                     "reanalysis_relative_humidity_percent + " \
                     "reanalysis_tdtr_k + " \
-                    "weekofyearcopy"
+                    "weekofyearcopy + " \
+                    "weekofyear_sin + " \
+                    "weekofyear_cos"
 
     grid = 10 ** np.arange(-8, -3, dtype=np.float64)
 
