@@ -8,7 +8,7 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
-
+from sklearn.metrics import mean_absolute_error
 
 def split_data(data: pd.DataFrame) -> Tuple:
     """Splits data into features and targets training and test sets.
@@ -65,6 +65,12 @@ def get_best_model(train, test):
     fitted_model = model.fit()
     return fitted_model
 
+def comp_mean_abs_error(sj_test_data, iq_test_data, sj_fitted_model, iq_fitted_model):
+    sj_predictions = sj_fitted_model.predict(sj_test_data).astype(int)
+    iq_predictions = iq_fitted_model.predict(iq_test_data).astype(int)
+    mae_sj = mean_absolute_error(sj_test_data.total_cases, sj_predictions)
+    mae_iq = mean_absolute_error(iq_test_data.total_cases, iq_predictions)
+    return mae_sj, mae_iq
 
 def plot_fitted_values(train, fitted_model):
     figs, axes = plt.subplots(nrows=1, ncols=1)
