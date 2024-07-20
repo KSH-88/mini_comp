@@ -1,6 +1,6 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import write_output_file, wrapper_split_data, wrapper_get_best_model, wrapper_plot_fitted_values
+from .nodes import write_output_file, wrapper_split_data, wrapper_get_best_model, wrapper_plot_fitted_values, comp_mean_abs_error
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -33,6 +33,14 @@ def create_pipeline(**kwargs) -> Pipeline:
                         "sj_fitted_model", "iq_fitted_model"],
                 outputs="submission",
                 name="write_output_file_node",
+            ),
+
+            node(
+                func=comp_mean_abs_error,
+                inputs=["sj_train", "iq_train",
+                        "sj_fitted_model", "iq_fitted_model"],
+                outputs=["mae_sj", "mae_iq"],
+                name="comp_mean_abs_error_node",
             ),
 
         ]

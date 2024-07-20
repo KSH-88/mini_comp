@@ -8,6 +8,7 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
+from sklearn.metrics import mean_absolute_error
 
 
 def split_data(data: pd.DataFrame) -> Tuple:
@@ -33,7 +34,11 @@ def get_best_model(train, test):
                     "reanalysis_dew_point_temp_k + " \
                     "station_min_temp_c + " \
                     "station_avg_temp_c + " \
-                    "reanalysis_relative_humidity_percent"
+                    "reanalysis_relative_humidity_percent + " \
+                    "reanalysis_tdtr_k + " \
+                    "weekofyearcopy + " \
+                    "weekofyear_sin + " \
+                    "weekofyear_cos"
 
     grid = 10 ** np.arange(-8, -3, dtype=np.float64)
 
@@ -99,8 +104,12 @@ def wrapper_plot_fitted_values(sj_train_data, sj_fitted_model, iq_train_data, iq
 
 
 def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted_model):
-    sj_predictions = sj_fitted_model.predict(sj_unseen_test).astype(int)
-    iq_predictions = iq_fitted_model.predict(iq_unseen_test).astype(int)
+    sj_predictions = sj_fitted_model.predict(sj_unseen_test)
+    iq_predictions = iq_fitted_model.predict(iq_unseen_test)
+
+    sj_predictions = (np.exp(sj_predictions) - 1).astype(int)
+    iq_predictions = (np.exp(iq_predictions) - 1).astype(int)
+
     sj_unseen_test['city'] = 'sj'
     iq_unseen_test['city'] = 'iq'
     submission = [sj_unseen_test, iq_unseen_test]
@@ -110,3 +119,17 @@ def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted
     submission['total_cases'] = submission.total_cases
     submission = submission[['city', 'year', 'weekofyear', 'total_cases']]
     return submission
+
+
+def comp_mean_abs_error(sj_train, iq_train, sj_fitted_model, iq_fitted_model):
+    sj_predictions = sj_fitted_model.predict(sj_train).astype(int)
+    iq_predictions = iq_fitted_model.predict(iq_train).astype(int)
+
+    sj_predictions = np.exp(sj_predictions) - 1
+    iq_predictions = np.exp(iq_predictions) - 1
+
+    mae_sj = mean_absolute_error(sj_train.total_cases, sj_predictions)
+    mae_iq = mean_absolute_error(iq_train.total_cases, iq_predictions)
+    print('mae_sj', mae_sj)
+    print('mae_iq', mae_iq)
+    return mae_sj, mae_iq
