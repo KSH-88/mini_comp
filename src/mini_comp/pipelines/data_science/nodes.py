@@ -104,8 +104,12 @@ def wrapper_plot_fitted_values(sj_train_data, sj_fitted_model, iq_train_data, iq
 
 
 def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted_model):
-    sj_predictions = sj_fitted_model.predict(sj_unseen_test).astype(int)
-    iq_predictions = iq_fitted_model.predict(iq_unseen_test).astype(int)
+    sj_predictions = sj_fitted_model.predict(sj_unseen_test)
+    iq_predictions = iq_fitted_model.predict(iq_unseen_test)
+
+    sj_predictions = (np.exp(sj_predictions) - 1).astype(int)
+    iq_predictions = (np.exp(iq_predictions) - 1).astype(int)
+
     sj_unseen_test['city'] = 'sj'
     iq_unseen_test['city'] = 'iq'
     submission = [sj_unseen_test, iq_unseen_test]
@@ -117,11 +121,15 @@ def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted
     return submission
 
 
-def comp_mean_abs_error(sj_test_data, iq_test_data, sj_fitted_model, iq_fitted_model):
-    sj_predictions = sj_fitted_model.predict(sj_test_data).astype(int)
-    iq_predictions = iq_fitted_model.predict(iq_test_data).astype(int)
-    mae_sj = mean_absolute_error(sj_test_data.total_cases, sj_predictions)
-    mae_iq = mean_absolute_error(iq_test_data.total_cases, iq_predictions)
+def comp_mean_abs_error(sj_train, iq_train, sj_fitted_model, iq_fitted_model):
+    sj_predictions = sj_fitted_model.predict(sj_train).astype(int)
+    iq_predictions = iq_fitted_model.predict(iq_train).astype(int)
+
+    sj_predictions = np.exp(sj_predictions) - 1
+    iq_predictions = np.exp(iq_predictions) - 1
+
+    mae_sj = mean_absolute_error(sj_train.total_cases, sj_predictions)
+    mae_iq = mean_absolute_error(iq_train.total_cases, iq_predictions)
     print('mae_sj', mae_sj)
     print('mae_iq', mae_iq)
     return mae_sj, mae_iq

@@ -129,4 +129,10 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
     sj_train = sj_train_features.join(sj_train_labels)
     iq_train = iq_train_features.join(iq_train_labels)
 
+    sj_train['total_cases'] = np.log(1 + sj_train['total_cases'])
+    iq_train['total_cases'] = np.log(1 + iq_train['total_cases'])
+
+    print(sj_train.head())
+    print(iq_train.head())
+
     return sj_train, iq_train, sj_unseen_test, iq_unseen_test

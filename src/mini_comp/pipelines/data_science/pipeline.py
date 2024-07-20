@@ -36,8 +36,8 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
 
             node(
-                func= comp_mean_abs_error,
-                inputs=["sj_test_data", "iq_test_data",
+                func=comp_mean_abs_error,
+                inputs=["sj_train", "iq_train",
                         "sj_fitted_model", "iq_fitted_model"],
                 outputs=["mae_sj", "mae_iq"],
                 name="comp_mean_abs_error_node",
