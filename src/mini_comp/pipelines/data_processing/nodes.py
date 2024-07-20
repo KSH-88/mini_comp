@@ -57,6 +57,16 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
     sj_test_features_imputed = sj_test_features.fillna(method='ffill').round(2)
     iq_test_features_imputed = iq_test_features.fillna(method='ffill').round(2)
 
+    sj_train_features_imputed = sj_train_features_imputed.reset_index()
+    iq_train_features_imputed = iq_train_features_imputed.reset_index()
+    sj_test_features_imputed = sj_test_features_imputed.reset_index()
+    iq_test_features_imputed = iq_test_features_imputed.reset_index()
+
+    sj_train_features_imputed['weekofyearcopy'] = sj_train_features_imputed['weekofyear']
+    iq_train_features_imputed['weekofyearcopy'] = iq_train_features_imputed['weekofyear']
+    sj_test_features_imputed['weekofyearcopy'] = sj_test_features_imputed['weekofyear']
+    iq_test_features_imputed['weekofyearcopy'] = iq_test_features_imputed['weekofyear']
+
     # select features we want
     features = ['reanalysis_specific_humidity_g_per_kg',
                 'reanalysis_dew_point_temp_k',
@@ -64,7 +74,16 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
                 'station_min_temp_c',
                 'reanalysis_relative_humidity_percent',
                 'reanalysis_tdtr_k',
-                '']
+                'weekofyearcopy']
+
+    sj_train_features_imputed = sj_train_features_imputed.set_index(
+        ['year', 'weekofyear'])
+    iq_train_features_imputed = iq_train_features_imputed.set_index(
+        ['year', 'weekofyear'])
+    sj_test_features_imputed = sj_test_features_imputed.set_index(
+        ['year', 'weekofyear'])
+    iq_test_features_imputed = iq_test_features_imputed.set_index(
+        ['year', 'weekofyear'])
 
     sj_train_features = sj_train_features_imputed[features]
     iq_train_features = iq_train_features_imputed[features]

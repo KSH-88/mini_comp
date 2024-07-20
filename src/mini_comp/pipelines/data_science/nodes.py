@@ -10,6 +10,7 @@ import numpy as np
 import statsmodels.api as sm
 from sklearn.metrics import mean_absolute_error
 
+
 def split_data(data: pd.DataFrame) -> Tuple:
     """Splits data into features and targets training and test sets.
 
@@ -34,7 +35,8 @@ def get_best_model(train, test):
                     "station_min_temp_c + " \
                     "station_avg_temp_c + " \
                     "reanalysis_relative_humidity_percent + " \
-                    "reanalysis_tdtr_k"
+                    "reanalysis_tdtr_k + " \
+                    "weekofyearcopy"
 
     grid = 10 ** np.arange(-8, -3, dtype=np.float64)
 
@@ -111,6 +113,7 @@ def write_output_file(sj_unseen_test, iq_unseen_test, sj_fitted_model, iq_fitted
     submission['total_cases'] = submission.total_cases
     submission = submission[['city', 'year', 'weekofyear', 'total_cases']]
     return submission
+
 
 def comp_mean_abs_error(sj_test_data, iq_test_data, sj_fitted_model, iq_fitted_model):
     sj_predictions = sj_fitted_model.predict(sj_test_data).astype(int)
