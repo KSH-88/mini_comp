@@ -62,7 +62,9 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
                 'reanalysis_dew_point_temp_k',
                 'station_avg_temp_c',
                 'station_min_temp_c',
-                'reanalysis_relative_humidity_percent']
+                'reanalysis_relative_humidity_percent',
+                'reanalysis_tdtr_k',
+                '']
 
     sj_train_features = sj_train_features_imputed[features]
     iq_train_features = iq_train_features_imputed[features]
