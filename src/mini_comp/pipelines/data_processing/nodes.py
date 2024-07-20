@@ -61,7 +61,8 @@ def preprocess_cities(sj_train_features: pd.DataFrame, iq_train_features: pd.Dat
     features = ['reanalysis_specific_humidity_g_per_kg',
                 'reanalysis_dew_point_temp_k',
                 'station_avg_temp_c',
-                'station_min_temp_c']
+                'station_min_temp_c',
+                'reanalysis_relative_humidity_percent']
 
     sj_train_features = sj_train_features_imputed[features]
     iq_train_features = iq_train_features_imputed[features]
